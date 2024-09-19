@@ -1,0 +1,130 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+class Aluno {
+    private String nome;
+    private int rm;
+    private int redacoesEntregues;
+
+    public Aluno(String nome, int rm) {
+        this.nome = nome;
+        this.rm = rm;
+        this.redacoesEntregues = 0;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public int getRm() {
+        return rm;
+    }
+
+    public int getRedacoesEntregues() {
+        return redacoesEntregues;
+    }
+
+    public void entregarRedacao() {
+        this.redacoesEntregues++;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public void setRm(int rm) {
+        this.rm = rm;
+    }
+}
+
+public class Main {
+    private static ArrayList<Aluno> alunos = new ArrayList<>();
+    private static Scanner scanner = new Scanner(System.in);
+
+    public static void main(String[] args) {
+        int opcao = -1;
+        while (opcao != 0) {
+            System.out.println("\nSistema de Controle de Redações");
+            System.out.println("1. Cadastrar Aluno");
+            System.out.println("2. Registrar Entrega de Redação");
+            System.out.println("3. Verificar Quantidade de Redações Entregues");
+            System.out.println("0. Sair");
+            System.out.print("Escolha uma opção: ");
+            opcao = scanner.nextInt();
+            scanner.nextLine(); // Limpa o buffer do scanner
+
+            switch (opcao) {
+                case 1 -> cadastrarAluno();
+                case 2 -> registrarEntregaRedacao();
+                case 3 -> verificarRedacoesEntregues();
+                case 0 -> System.out.println("Encerrando o sistema...");
+                default -> System.out.println("Opção inválida. Tente novamente.");
+            }
+        }
+    }
+
+    public static void cadastrarAluno() {
+        System.out.print("Digite o nome do aluno: ");
+        String nome = scanner.nextLine();
+        System.out.print("Digite o RM do aluno: ");
+        int rm = scanner.nextInt();
+        scanner.nextLine(); // Limpa o buffer do scanner
+
+        Aluno aluno = new Aluno(nome, rm);
+        alunos.add(aluno);
+
+        System.out.println("Aluno cadastrado com sucesso!");
+    }
+
+    public static void registrarEntregaRedacao() {
+        System.out.print("Digite o RM do aluno: ");
+        int rm = scanner.nextInt();
+        scanner.nextLine(); // Limpa o buffer do scanner
+
+        Aluno aluno = buscarAlunoPorRM(rm);
+        if (aluno != null) {
+            aluno.entregarRedacao();
+            System.out.println("Redação registrada para o aluno " + aluno.getNome());
+        } else {
+            System.out.println("Aluno não encontrado.");
+        }
+    }
+
+    public static void verificarRedacoesEntregues() {
+        System.out.print("Digite o RM do aluno: ");
+        int rm = scanner.nextInt();
+        scanner.nextLine(); // Limpa o buffer do scanner
+
+        Aluno aluno = buscarAlunoPorRM(rm);
+        if (aluno != null) {
+            System.out.println("O aluno " + aluno.getNome() + " entregou " + aluno.getRedacoesEntregues() + " redações.");
+        } else {
+            System.out.println("Aluno não encontrado.");
+        }
+    }
+
+    public static Aluno buscarAlunoPorRM(int rm) {
+        for (Aluno aluno : alunos) {
+            if (aluno.getRm() == rm) {
+                return aluno;
+            }
+        }
+        return null;
+    }
+
+    public static ArrayList<Aluno> getAlunos() {
+        return alunos;
+    }
+
+    public static Scanner getScanner() {
+        return scanner;
+    }
+
+    public static void setScanner(Scanner scanner) {
+        Main.scanner = scanner;
+    }
+
+    public static void setAlunos(ArrayList<Aluno> alunos) {
+        Main.alunos = alunos;
+    }
+}
